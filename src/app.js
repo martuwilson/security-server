@@ -1,17 +1,27 @@
 import dotenv from 'dotenv';
-import express from 'express'; 
-//import pool from './database/index.js'; // call pool to connect to database
+import express from 'express';
+import cors from 'cors';
+// import pool from './database/index.js'; // Conection to PostgreSQL
+import analyzeRoute from './routes/analize.routes.js';
 
-
-const app = express();
 dotenv.config();
 
+const app = express();
+
+// Middlewares
+app.use(cors());
 app.use(express.json());
 
-app.use('/api/sec', /* add route here */);
+// Routes
+app.use('/api/sec', analyzeRoute);
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${process.env.PORT}`);
+    console.log(`✅ Server listening on port ${PORT}`);
+});
+
+// Handle unhandled promise rejections
+process.on('uncaughtException', (err) => {
+    console.error('🔥 Uncaught Exception:', err);
 });
